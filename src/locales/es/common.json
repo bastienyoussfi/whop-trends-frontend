@@ -1,0 +1,45 @@
+{
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "viewAll": "Ver todo",
+    "learnMore": "Saber más",
+    "goTo": "Ir a",
+    "back": "Volver"
+  },
+  "labels": {
+    "search": "Buscar",
+    "settings": "Configuración",
+    "help": "Obtener ayuda",
+    "profile": "Perfil",
+    "logout": "Cerrar sesión",
+    "language": "Idioma"
+  },
+  "navigation": {
+    "overview": "Resumen",
+    "analyze": "Analizar",
+    "dashboard": "Panel",
+    "trendingWhops": "Whops en tendencia",
+    "keywordTrends": "Tendencias de palabras clave",
+    "nicheAnalytics": "Análisis de nicho",
+    "competitorTracking": "Seguimiento de competidores"
+  },
+  "status": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "noData": "No hay datos disponibles"
+  },
+  "time": {
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "lastWeek": "La semana pasada",
+    "lastMonth": "El mes pasado",
+    "last7Days": "Últimos 7 días",
+    "last30Days": "Últimos 30 días",
+    "last90Days": "Últimos 90 días"
+  }
+}

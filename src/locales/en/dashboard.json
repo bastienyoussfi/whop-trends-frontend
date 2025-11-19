@@ -1,0 +1,40 @@
+{
+  "welcome": {
+    "greeting": "Welcome back, {{name}}!",
+    "subtitle": "Here's what's trending on Whop today",
+    "description": "Track search trends, discover hot niches, and analyze your competition in real-time"
+  },
+  "metrics": {
+    "hotNiches": {
+      "title": "Hot Niches",
+      "description": "Trending product categories",
+      "trendUp": "+{{percent}}% from last week",
+      "trendDown": "{{percent}}% from last week"
+    },
+    "trendingKeywords": {
+      "title": "Trending Keywords",
+      "description": "Most searched terms",
+      "trendUp": "+{{percent}}% from last week",
+      "trendDown": "{{percent}}% from last week"
+    }
+  },
+  "shortcuts": {
+    "title": "Quick Access",
+    "trendingWhops": {
+      "title": "Trending Whops",
+      "description": "View the hottest products and sellers on Whop right now"
+    },
+    "keywordTrends": {
+      "title": "Keyword Trends",
+      "description": "Analyze search patterns and discover popular keywords"
+    },
+    "nicheAnalytics": {
+      "title": "Niche Analytics",
+      "description": "Deep dive into specific niches and market segments"
+    },
+    "competitorTracking": {
+      "title": "Competitor Tracking",
+      "description": "Monitor your competition and stay ahead of the market"
+    }
+  }
+}

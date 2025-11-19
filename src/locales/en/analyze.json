@@ -1,0 +1,22 @@
+{
+  "trendingWhops": {
+    "title": "Trending Whops",
+    "description": "Discover the hottest products and sellers on Whop",
+    "comingSoon": "This feature is coming soon. Stay tuned!"
+  },
+  "keywordTrends": {
+    "title": "Keyword Trends",
+    "description": "Analyze search patterns and keyword popularity",
+    "comingSoon": "This feature is coming soon. Stay tuned!"
+  },
+  "nicheAnalytics": {
+    "title": "Niche Analytics",
+    "description": "Deep insights into market niches and categories",
+    "comingSoon": "This feature is coming soon. Stay tuned!"
+  },
+  "competitorTracking": {
+    "title": "Competitor Tracking",
+    "description": "Monitor competitors and market trends",
+    "comingSoon": "This feature is coming soon. Stay tuned!"
+  }
+}

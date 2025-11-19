@@ -1,0 +1,40 @@
+{
+  "welcome": {
+    "greeting": "¡Bienvenido de nuevo, {{name}}!",
+    "subtitle": "Esto es lo que está en tendencia en Whop hoy",
+    "description": "Rastrea tendencias de búsqueda, descubre nichos populares y analiza tu competencia en tiempo real"
+  },
+  "metrics": {
+    "hotNiches": {
+      "title": "Nichos populares",
+      "description": "Categorías de productos en tendencia",
+      "trendUp": "+{{percent}}% desde la semana pasada",
+      "trendDown": "{{percent}}% desde la semana pasada"
+    },
+    "trendingKeywords": {
+      "title": "Palabras clave en tendencia",
+      "description": "Términos más buscados",
+      "trendUp": "+{{percent}}% desde la semana pasada",
+      "trendDown": "{{percent}}% desde la semana pasada"
+    }
+  },
+  "shortcuts": {
+    "title": "Acceso rápido",
+    "trendingWhops": {
+      "title": "Whops en tendencia",
+      "description": "Vea los productos y vendedores más populares en Whop ahora mismo"
+    },
+    "keywordTrends": {
+      "title": "Tendencias de palabras clave",
+      "description": "Analiza patrones de búsqueda y descubre palabras clave populares"
+    },
+    "nicheAnalytics": {
+      "title": "Análisis de nicho",
+      "description": "Profundiza en nichos específicos y segmentos de mercado"
+    },
+    "competitorTracking": {
+      "title": "Seguimiento de competidores",
+      "description": "Monitorea tu competencia y mantente por delante del mercado"
+    }
+  }
+}

@@ -17,6 +17,7 @@ These rules are ABSOLUTE and have ZERO exceptions:
 ---
 
 ## Tech Stack
+
 - **Framework**: Vite + React 18
 - **Routing**: TanStack Router (ALL routing must use TanStack Router)
 - **Data Fetching**: TanStack Query (ALL async data operations must use TanStack Query)
@@ -29,6 +30,7 @@ These rules are ABSOLUTE and have ZERO exceptions:
 ## Core Principles
 
 ### 1. Component Architecture & Code Quality
+
 - **Keep components under 100 lines** - split into smaller, focused components
 - **Single Responsibility Principle** - each component, function, and hook does ONE thing well
 - **SOLID Principles** - follow all SOLID principles religiously
@@ -38,6 +40,7 @@ These rules are ABSOLUTE and have ZERO exceptions:
 - **Pure functions when possible** - predictable, testable, maintainable code
 
 ### 2. File Structure
+
 ```
 src/
 ├── components/
@@ -63,21 +66,24 @@ src/
 ## Internationalization (i18n) - CRITICAL
 
 ### ⚠️ ABSOLUTE RULE: NO HARDCODED TEXT
+
 **Every piece of user-facing text MUST be translated. Zero exceptions.**
 
 ### Core Principles
+
 1. **Translation keys, not text** - Components accept `*Key` props, never raw text
 2. **Leaf-level translation** - The `useTranslation()` hook is called at the component that renders text
 3. **Namespaced keys** - Organize translations by feature/domain
 4. **Type-safe keys** - Use TypeScript to validate translation keys exist
 
 ### Setup
+
 ```typescript
 // i18n.ts
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import en from './locales/en';
-import fr from './locales/fr';
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import en from './locales/en'
+import fr from './locales/fr'
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -87,10 +93,11 @@ i18n.use(initReactI18next).init({
   lng: 'en',
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
-});
+})
 ```
 
 ### Translation Key Structure
+
 ```json
 // locales/en/common.json
 {
@@ -126,6 +133,7 @@ i18n.use(initReactI18next).init({
 ### Component Patterns
 
 #### ✅ CORRECT: Reusable Components with Translation Keys
+
 ```typescript
 // Button.tsx - Reusable UI component
 interface ButtonProps {
@@ -137,7 +145,7 @@ interface ButtonProps {
 
 export function Button({ labelKey, variant, ...props }: ButtonProps) {
   const { t } = useTranslation(); // ✅ Translate at leaf level
-  
+
   return (
     <button
       className={cn('px-4 py-2 rounded-lg', /* styles */)}
@@ -154,6 +162,7 @@ export function Button({ labelKey, variant, ...props }: ButtonProps) {
 ```
 
 #### ✅ CORRECT: Optional Text with Translation Keys
+
 ```typescript
 // Card.tsx - Component with optional title
 interface CardProps {
@@ -163,7 +172,7 @@ interface CardProps {
 
 export function Card({ titleKey, children }: CardProps) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="rounded-lg border bg-card">
       {titleKey && (
@@ -183,6 +192,7 @@ export function Card({ titleKey, children }: CardProps) {
 ```
 
 #### ✅ CORRECT: Lists with Translation Keys
+
 ```typescript
 // Dropdown.tsx - Component with options
 interface DropdownOption {
@@ -198,7 +208,7 @@ interface DropdownProps {
 
 export function Dropdown({ options, placeholderKey, onChange }: DropdownProps) {
   const { t } = useTranslation();
-  
+
   return (
     <Select onValueChange={onChange}>
       <SelectTrigger>
@@ -221,7 +231,7 @@ const statusOptions: DropdownOption[] = [
   { value: 'inactive', labelKey: 'common.status.inactive' },
 ];
 
-<Dropdown 
+<Dropdown
   options={statusOptions}
   placeholderKey="common.labels.selectStatus"
   onChange={handleChange}
@@ -229,6 +239,7 @@ const statusOptions: DropdownOption[] = [
 ```
 
 #### ✅ CORRECT: Forms with Translation Keys
+
 ```typescript
 // TextField.tsx - Reusable input component
 interface TextFieldProps {
@@ -239,15 +250,15 @@ interface TextFieldProps {
   onChange: (value: string) => void;
 }
 
-export function TextField({ 
-  labelKey, 
-  placeholderKey, 
+export function TextField({
+  labelKey,
+  placeholderKey,
   errorKey,
   value,
-  onChange 
+  onChange
 }: TextFieldProps) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium">
@@ -280,6 +291,7 @@ export function TextField({
 ```
 
 #### ✅ CORRECT: Dynamic Content with Interpolation
+
 ```typescript
 // Toast/Alert with dynamic values
 interface ToastProps {
@@ -289,7 +301,7 @@ interface ToastProps {
 
 export function Toast({ messageKey, values }: ToastProps) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="rounded-lg bg-background p-4 shadow-lg">
       {t(messageKey, values)} {/* ✅ Pass values for interpolation */}
@@ -306,17 +318,18 @@ export function Toast({ messageKey, values }: ToastProps) {
 }
 
 // Usage
-<Toast 
-  messageKey="messages.userCreated" 
-  values={{ name: user.name }} 
+<Toast
+  messageKey="messages.userCreated"
+  values={{ name: user.name }}
 />
-<Toast 
-  messageKey="messages.itemsSelected" 
-  values={{ count: selectedItems.length }} 
+<Toast
+  messageKey="messages.itemsSelected"
+  values={{ count: selectedItems.length }}
 />
 ```
 
 #### ❌ WRONG: Hardcoded Text
+
 ```typescript
 // ❌ NEVER DO THIS
 export function Button({ label }: { label: string }) {
@@ -343,7 +356,7 @@ const options = [
 
 ```typescript
 // types/i18n.ts - Type-safe translation keys
-import en from '@/locales/en';
+import en from '@/locales/en'
 
 type DeepKeys<T> = T extends object
   ? {
@@ -351,15 +364,15 @@ type DeepKeys<T> = T extends object
         ? T[K] extends object
           ? `${K}.${DeepKeys<T[K]>}`
           : K
-        : never;
+        : never
     }[keyof T]
-  : never;
+  : never
 
-export type TranslationKey = DeepKeys<typeof en>;
+export type TranslationKey = DeepKeys<typeof en>
 
 // Now use in components for autocomplete and validation
 interface ButtonProps {
-  labelKey: TranslationKey;  // ✅ Type-safe, IDE autocomplete
+  labelKey: TranslationKey // ✅ Type-safe, IDE autocomplete
 }
 ```
 
@@ -375,7 +388,7 @@ interface IconButtonProps {
 
 export function IconButton({ iconAriaLabelKey, icon, onClick }: IconButtonProps) {
   const { t } = useTranslation();
-  
+
   return (
     <button
       aria-label={t(iconAriaLabelKey)}  // ✅ Translated ARIA label
@@ -419,19 +432,21 @@ t('title');  // Uses features.users.title
 ### Best Practices
 
 #### Naming Conventions
+
 ```typescript
 // ✅ DO: Use descriptive, hierarchical keys
-"features.users.actions.createNew"
-"common.validation.email.required"
-"errors.api.unauthorized"
+'features.users.actions.createNew'
+'common.validation.email.required'
+'errors.api.unauthorized'
 
 // ❌ AVOID: Flat, unclear keys
-"button1"
-"error_msg"
-"txt_save"
+'button1'
+'error_msg'
+'txt_save'
 ```
 
 #### Pluralization
+
 ```json
 // Translation with plural forms
 {
@@ -448,6 +463,7 @@ const { t } = useTranslation();
 ```
 
 #### Context-Specific Keys
+
 ```typescript
 // ✅ DO: Different contexts get different keys
 {
@@ -466,6 +482,7 @@ const { t } = useTranslation();
 ### i18n Checklist
 
 Before committing:
+
 - [ ] Zero hardcoded text in components
 - [ ] All props use `*Key` suffix for translation keys
 - [ ] `useTranslation()` called at leaf level (render time)
@@ -484,6 +501,7 @@ Before committing:
 **Every single type must be explicitly defined. Zero exceptions.**
 
 ### Strong Typing
+
 ```typescript
 // ✅ DO: Use enums for fixed sets of values
 enum ButtonVariant {
@@ -494,11 +512,11 @@ enum ButtonVariant {
 
 // ✅ DO: Define clear interfaces for props
 interface ButtonProps {
-  variant: ButtonVariant;
-  size?: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
-  onClick?: () => void;
-  children: React.ReactNode;
+  variant: ButtonVariant
+  size?: 'sm' | 'md' | 'lg'
+  disabled?: boolean
+  onClick?: () => void
+  children: React.ReactNode
 }
 
 // ✅ DO: Use discriminated unions for complex states
@@ -506,13 +524,13 @@ type DataState<T> =
   | { status: 'idle' }
   | { status: 'loading' }
   | { status: 'success'; data: T }
-  | { status: 'error'; error: Error };
+  | { status: 'error'; error: Error }
 
 // ✅ DO: Define specific types for everything
 interface ApiResponse<T> {
-  data: T;
-  status: number;
-  message: string;
+  data: T
+  status: number
+  message: string
 }
 
 // ✅ DO: Type function parameters and returns explicitly
@@ -520,25 +538,26 @@ function processUser(user: User): ProcessedUser {
   return {
     id: user.id,
     fullName: `${user.firstName} ${user.lastName}`,
-  };
+  }
 }
 
 // ❌ NEVER: Using 'any' or 'unknown'
 type BadProps = {
-  data: any; // ❌ FORBIDDEN
-  value: unknown; // ❌ FORBIDDEN
-  onClick: Function; // ❌ Too generic
-};
+  data: any // ❌ FORBIDDEN
+  value: unknown // ❌ FORBIDDEN
+  onClick: Function // ❌ Too generic
+}
 
 // ✅ DO: Use specific types instead
 type GoodProps = {
-  data: UserData; // ✅ Specific type
-  value: string | number | null; // ✅ Explicit union
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void; // ✅ Specific
-};
+  data: UserData // ✅ Specific type
+  value: string | number | null // ✅ Explicit union
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void // ✅ Specific
+}
 ```
 
 ### Type Organization
+
 - Export all types from component files
 - Create shared types in `types/` directory
 - Use `type` for unions/intersections, `interface` for object shapes
@@ -554,17 +573,18 @@ type GoodProps = {
 **Never use React Router, custom routing, or window.location. Zero exceptions.**
 
 ### Route Definition
+
 ```typescript
 // ✅ DO: Define routes with proper typing
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router'
 
 interface UserRouteParams {
-  userId: string;
+  userId: string
 }
 
 interface UserSearchParams {
-  tab?: 'profile' | 'settings' | 'activity';
-  page?: number;
+  tab?: 'profile' | 'settings' | 'activity'
+  page?: number
 }
 
 export const Route = createFileRoute('/users/$userId')({
@@ -584,35 +604,37 @@ export const Route = createFileRoute('/users/$userId')({
     const user = await context.queryClient.ensureQueryData({
       queryKey: ['user', params.userId],
       queryFn: () => fetchUser(params.userId),
-    });
-    return { user };
+    })
+    return { user }
   },
-});
+})
 ```
 
 ### Route Component
+
 ```typescript
 // ✅ DO: Use typed route hooks
-import { useParams, useSearch, useNavigate } from '@tanstack/react-router';
+import { useParams, useSearch, useNavigate } from '@tanstack/react-router'
 
 function UserPage() {
-  const { userId } = useParams({ from: '/users/$userId' }); // ✅ Typed params
-  const { tab, page } = useSearch({ from: '/users/$userId' }); // ✅ Typed search
-  const navigate = useNavigate();
+  const { userId } = useParams({ from: '/users/$userId' }) // ✅ Typed params
+  const { tab, page } = useSearch({ from: '/users/$userId' }) // ✅ Typed search
+  const navigate = useNavigate()
 
   const handleTabChange = (newTab: 'profile' | 'settings' | 'activity') => {
     navigate({
       to: '/users/$userId',
       params: { userId },
       search: { tab: newTab, page },
-    });
-  };
+    })
+  }
 
   // Component logic...
 }
 ```
 
 ### Navigation
+
 ```typescript
 // ✅ DO: Use typed navigation
 import { Link } from '@tanstack/react-router';
@@ -631,6 +653,7 @@ import { Link } from '@tanstack/react-router';
 ```
 
 ### Best Practices
+
 - Define all routes in the `routes/` directory using file-based routing
 - Always validate params and search params
 - Use loaders for data fetching (integrates with TanStack Query)
@@ -647,9 +670,10 @@ import { Link } from '@tanstack/react-router';
 **Never use fetch/axios directly, useEffect for data fetching, or custom async logic. Zero exceptions.**
 
 ### Query Setup
+
 ```typescript
 // ✅ DO: Define typed queries
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 // Define query keys as constants for reusability
 export const userKeys = {
@@ -658,35 +682,36 @@ export const userKeys = {
   list: (filters: UserFilters) => [...userKeys.lists(), filters] as const,
   details: () => [...userKeys.all, 'detail'] as const,
   detail: (id: string) => [...userKeys.details(), id] as const,
-};
+}
 
 // Define API functions with explicit types
 interface User {
-  id: string;
-  name: string;
-  email: string;
+  id: string
+  name: string
+  email: string
 }
 
 interface UserFilters {
-  role?: string;
-  status?: 'active' | 'inactive';
+  role?: string
+  status?: 'active' | 'inactive'
 }
 
 async function fetchUser(userId: string): Promise<User> {
-  const response = await fetch(`/api/users/${userId}`);
-  if (!response.ok) throw new Error('Failed to fetch user');
-  return response.json();
+  const response = await fetch(`/api/users/${userId}`)
+  if (!response.ok) throw new Error('Failed to fetch user')
+  return response.json()
 }
 
 async function fetchUsers(filters: UserFilters): Promise<User[]> {
-  const params = new URLSearchParams(filters as Record<string, string>);
-  const response = await fetch(`/api/users?${params}`);
-  if (!response.ok) throw new Error('Failed to fetch users');
-  return response.json();
+  const params = new URLSearchParams(filters as Record<string, string>)
+  const response = await fetch(`/api/users?${params}`)
+  if (!response.ok) throw new Error('Failed to fetch users')
+  return response.json()
 }
 ```
 
 ### Using Queries
+
 ```typescript
 // ✅ DO: Use queries with proper typing
 function UserProfile({ userId }: { userId: string }) {
@@ -724,6 +749,7 @@ function BadUserProfile({ userId }: { userId: string }) {
 ```
 
 ### Mutations
+
 ```typescript
 // ✅ DO: Use mutations for write operations
 interface CreateUserData {
@@ -775,40 +801,46 @@ function CreateUserForm() {
 ```
 
 ### Optimistic Updates
+
 ```typescript
 // ✅ DO: Implement optimistic updates for better UX
 const mutation = useMutation({
   mutationFn: updateUser,
   onMutate: async (updatedUser) => {
     // Cancel outgoing refetches
-    await queryClient.cancelQueries({ queryKey: userKeys.detail(updatedUser.id) });
+    await queryClient.cancelQueries({
+      queryKey: userKeys.detail(updatedUser.id),
+    })
 
     // Snapshot previous value
-    const previousUser = queryClient.getQueryData(userKeys.detail(updatedUser.id));
+    const previousUser = queryClient.getQueryData(
+      userKeys.detail(updatedUser.id),
+    )
 
     // Optimistically update
-    queryClient.setQueryData(userKeys.detail(updatedUser.id), updatedUser);
+    queryClient.setQueryData(userKeys.detail(updatedUser.id), updatedUser)
 
     // Return context with snapshot
-    return { previousUser };
+    return { previousUser }
   },
   onError: (error, variables, context) => {
     // Rollback on error
     if (context?.previousUser) {
       queryClient.setQueryData(
         userKeys.detail(variables.id),
-        context.previousUser
-      );
+        context.previousUser,
+      )
     }
   },
   onSettled: (data, error, variables) => {
     // Always refetch after error or success
-    queryClient.invalidateQueries({ queryKey: userKeys.detail(variables.id) });
+    queryClient.invalidateQueries({ queryKey: userKeys.detail(variables.id) })
   },
-});
+})
 ```
 
 ### Dependent Queries
+
 ```typescript
 // ✅ DO: Handle dependent queries properly
 function UserPosts({ userId }: { userId: string }) {
@@ -828,6 +860,7 @@ function UserPosts({ userId }: { userId: string }) {
 ```
 
 ### Infinite Queries
+
 ```typescript
 // ✅ DO: Use infinite queries for pagination
 interface PostsPage {
@@ -864,6 +897,7 @@ function InfinitePostList() {
 ```
 
 ### Best Practices
+
 - Always use query keys as constants for reusability
 - Define all API functions with explicit types
 - Handle loading, error, and success states
@@ -881,6 +915,7 @@ function InfinitePostList() {
 ### Tailwind CSS v4 Best Practices
 
 #### Color Variables
+
 ```css
 /* ✅ DO: Define colors as CSS variables in globals.css */
 @theme {
@@ -889,12 +924,12 @@ function InfinitePostList() {
   --color-accent: oklch(0.65 0.25 150);
   --color-background: oklch(1 0 0);
   --color-foreground: oklch(0.2 0 0);
-  
+
   /* Semantic colors */
   --color-success: oklch(0.7 0.2 140);
   --color-warning: oklch(0.75 0.2 60);
   --color-error: oklch(0.6 0.25 20);
-  
+
   /* Dark mode variants */
   @media (prefers-color-scheme: dark) {
     --color-background: oklch(0.15 0 0);
@@ -916,6 +951,7 @@ function InfinitePostList() {
 ```
 
 #### Responsive Design (Mobile-First)
+
 ```typescript
 // ✅ DO: Start with mobile, add breakpoints upward
 <div className="
@@ -935,6 +971,7 @@ function InfinitePostList() {
 ```
 
 #### Component Styling
+
 ```typescript
 // ✅ DO: Use cn() utility for conditional classes
 import { cn } from '@/lib/utils';
@@ -965,6 +1002,7 @@ className={`px-4 py-2 ${variant === 'primary' ? 'bg-blue-500' : 'bg-gray-500'}`}
 ## Component Patterns
 
 ### Composition Pattern
+
 ```typescript
 // ✅ DO: Create composable components
 export function Card({ children, className }: CardProps) {
@@ -991,28 +1029,29 @@ Card.Body = function CardBody({ children, className }: CardBodyProps) {
 ```
 
 ### Custom Hooks
+
 ```typescript
 // ✅ DO: Extract reusable logic into hooks
 function useAsync<T>(asyncFn: () => Promise<T>) {
-  const [state, setState] = useState<DataState<T>>({ status: 'idle' });
+  const [state, setState] = useState<DataState<T>>({ status: 'idle' })
 
   useEffect(() => {
-    setState({ status: 'loading' });
+    setState({ status: 'loading' })
     asyncFn()
-      .then(data => setState({ status: 'success', data }))
-      .catch(error => setState({ status: 'error', error: error.message }));
-  }, []);
+      .then((data) => setState({ status: 'success', data }))
+      .catch((error) => setState({ status: 'error', error: error.message }))
+  }, [])
 
-  return state;
+  return state
 }
 
 // ✅ DO: Create domain-specific hooks
 function useAuth() {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    throw new Error('useAuth must be used within AuthProvider')
   }
-  return context;
+  return context
 }
 ```
 
@@ -1021,6 +1060,7 @@ function useAuth() {
 ## Performance Optimization
 
 ### Code Splitting
+
 ```typescript
 // ✅ DO: Lazy load routes and heavy components
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
@@ -1033,20 +1073,21 @@ const AdminPanel = lazy(() => import('@/pages/AdminPanel'));
 ```
 
 ### Memoization
+
 ```typescript
 // ✅ DO: Memoize expensive calculations
 const sortedItems = useMemo(
   () => items.sort((a, b) => a.value - b.value),
-  [items]
-);
+  [items],
+)
 
 // ✅ DO: Memoize callbacks passed to children
 const handleClick = useCallback(() => {
-  console.log('clicked');
-}, []);
+  console.log('clicked')
+}, [])
 
 // ❌ AVOID: Over-memoization of simple operations
-const fullName = useMemo(() => `${first} ${last}`, [first, last]); // Overkill
+const fullName = useMemo(() => `${first} ${last}`, [first, last]) // Overkill
 ```
 
 ---
@@ -1054,6 +1095,7 @@ const fullName = useMemo(() => `${first} ${last}`, [first, last]); // Overkill
 ## Accessibility
 
 ### ARIA and Semantic HTML
+
 ```typescript
 // ✅ DO: Use semantic HTML and ARIA attributes
 <button
@@ -1077,6 +1119,7 @@ const fullName = useMemo(() => `${first} ${last}`, [first, last]); // Overkill
 ```
 
 ### Focus Management
+
 ```typescript
 // ✅ DO: Manage focus for modals and overlays
 const dialogRef = useRef<HTMLDivElement>(null);
@@ -1097,6 +1140,7 @@ useEffect(() => {
 ## Error Handling
 
 ### Error Boundaries
+
 ```typescript
 // ✅ DO: Implement error boundaries for sections
 class ErrorBoundary extends React.Component<
@@ -1104,19 +1148,20 @@ class ErrorBoundary extends React.Component<
   { hasError: boolean }
 > {
   static getDerivedStateFromError() {
-    return { hasError: true };
+    return { hasError: true }
   }
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback;
+      return this.props.fallback
     }
-    return this.props.children;
+    return this.props.children
   }
 }
 ```
 
 ### User Feedback
+
 ```typescript
 // ✅ DO: Provide clear error states
 {state.status === 'error' && (
@@ -1138,6 +1183,7 @@ class ErrorBoundary extends React.Component<
 ## Testing Considerations
 
 ### Component Testability
+
 ```typescript
 // ✅ DO: Write testable components with clear props
 interface UserCardProps {
@@ -1159,6 +1205,7 @@ interface UserCardProps {
 ### Before Committing - CRITICAL REQUIREMENTS
 
 #### TypeScript & Type Safety
+
 - [ ] **ZERO `any` types anywhere in the code**
 - [ ] **ZERO `unknown` types anywhere in the code**
 - [ ] All props have explicit TypeScript interfaces
@@ -1167,6 +1214,7 @@ interface UserCardProps {
 - [ ] No `@ts-ignore` or `@ts-expect-error` comments
 
 #### TanStack Requirements
+
 - [ ] **ALL routing uses TanStack Router** (no React Router, no manual routing)
 - [ ] **ALL data fetching uses TanStack Query** (no useEffect with fetch)
 - [ ] Query keys defined as constants
@@ -1174,12 +1222,14 @@ interface UserCardProps {
 - [ ] Loading and error states handled for all queries
 
 #### Internationalization
+
 - [ ] **ALL TEXT USES TRANSLATION KEYS** (zero hardcoded text)
 - [ ] Props use `*Key` naming for translation keys
 - [ ] Translations happen at leaf level (render time)
 - [ ] ARIA labels use translation keys
 
 #### Code Quality & Principles
+
 - [ ] Components are under 100 lines
 - [ ] Single Responsibility Principle - each component does ONE thing
 - [ ] SOLID principles followed
@@ -1189,6 +1239,7 @@ interface UserCardProps {
 - [ ] Proper separation of concerns
 
 #### Styling & Accessibility
+
 - [ ] Colors use CSS variables, not hardcoded values
 - [ ] Mobile-first responsive design implemented
 - [ ] Accessibility attributes added (ARIA, semantic HTML)
@@ -1196,6 +1247,7 @@ interface UserCardProps {
 - [ ] Keyboard navigation support
 
 #### Clean Code
+
 - [ ] No console.logs or debugging code
 - [ ] Unused imports removed
 - [ ] Unused variables removed
@@ -1203,6 +1255,7 @@ interface UserCardProps {
 - [ ] Proper error boundaries where needed
 
 ### Component Quality Standards
+
 - [ ] Single responsibility - does one thing well
 - [ ] Reusable - not overly coupled to specific use case
 - [ ] Composable - works well with other components
@@ -1216,27 +1269,29 @@ interface UserCardProps {
 ## Common Patterns
 
 ### Form Handling
+
 ```typescript
 // ✅ DO: Use controlled components with TypeScript
 interface FormData {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 const [formData, setFormData] = useState<FormData>({
   email: '',
   password: '',
-});
+})
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setFormData(prev => ({
+  setFormData((prev) => ({
     ...prev,
     [e.target.name]: e.target.value,
-  }));
-};
+  }))
+}
 ```
 
 ### Modal/Dialog Pattern
+
 ```typescript
 // ✅ DO: Use shadcn/ui Dialog with proper state management
 export function UserDialog({ userId, open, onOpenChange }: UserDialogProps) {

@@ -1,7 +1,6 @@
-"use client"
-
-import * as React from "react"
-import { type Icon } from "@tabler/icons-react"
+import * as React from 'react'
+import { type Icon } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 import {
   SidebarGroup,
@@ -9,28 +8,35 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
+
+interface NavSecondaryItem {
+  titleKey: string
+  url: string
+  icon: Icon
+}
+
+interface NavSecondaryProps
+  extends React.ComponentPropsWithoutRef<typeof SidebarGroup> {
+  items: NavSecondaryItem[]
+}
 
 export function NavSecondary({
   items,
   ...props
-}: {
-  items: {
-    title: string
-    url: string
-    icon: Icon
-  }[]
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: NavSecondaryProps): React.ReactElement {
+  const { t } = useTranslation('common')
+
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.titleKey}>
               <SidebarMenuButton asChild>
                 <a href={item.url}>
                   <item.icon />
-                  <span>{item.title}</span>
+                  <span>{t(item.titleKey)}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>

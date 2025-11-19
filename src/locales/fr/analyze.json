@@ -1,0 +1,22 @@
+{
+  "trendingWhops": {
+    "title": "Whops tendance",
+    "description": "Découvrez les produits et vendeurs les plus populaires sur Whop",
+    "comingSoon": "Cette fonctionnalité arrive bientôt. Restez à l'écoute !"
+  },
+  "keywordTrends": {
+    "title": "Tendances des mots-clés",
+    "description": "Analysez les modèles de recherche et la popularité des mots-clés",
+    "comingSoon": "Cette fonctionnalité arrive bientôt. Restez à l'écoute !"
+  },
+  "nicheAnalytics": {
+    "title": "Analytique de niche",
+    "description": "Aperçus approfondis des niches et catégories de marché",
+    "comingSoon": "Cette fonctionnalité arrive bientôt. Restez à l'écoute !"
+  },
+  "competitorTracking": {
+    "title": "Suivi des concurrents",
+    "description": "Surveillez les concurrents et les tendances du marché",
+    "comingSoon": "Cette fonctionnalité arrive bientôt. Restez à l'écoute !"
+  }
+}
